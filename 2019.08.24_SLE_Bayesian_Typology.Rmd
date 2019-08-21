@@ -1,0 +1,121 @@
+---
+title: "Analysing phonological systems:"
+subtitle: "on Bayesian typological research"
+author: "George Moroz"
+institute: "NRU HSE, Linguistic convergency laboratory"
+date: "24 August 2019"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+theme_set(theme_minimal())
+library(waffle)
+
+set.seed(42)
+all_langs <- tibble(group = "total = 7000,\nvalue 1 = 1794,\nθ = 0.256",
+                    value = sample(c("value 1", "value 2"),
+                                   7000,
+                                   replace = TRUE,
+                                   prob = c(0.25, 0.75)))
+```
+
+# In this talk I will try to cover:
+
+* goals of linguistic typology
+* role of the sampling
+* strategy for avoiding sampling
+
+---
+
+# Goals of the linguistic typology?
+
+--
+* attest a typological distributions
+
+--
+
+* find correlation of different typological distributions
+    * absolute universals
+    * distributional patterns and tendencies
+    * semantic maps
+    * diachronic change of typological values
+    
+--
+
+* correlation of linguistic and non-linguistic patterns
+    * population movements
+    * population size
+    * language contact
+    * sociolinguistic paramtres
+    * geopolitical environment
+    
+--
+  
+* deal with a mixed typological value per language
+
+---
+
+In this talk I will cover only simple case of an abstract binary typological category with two values: *val_1* and *val_2*.
+
+The main question: if I find a new language somwhere in the Caucasus, what is the probability $\theta$ that it will have value *val_1*?
+
+--
+
+The most common way of finding answer will be:
+
+* make a sample of languages
+* estimate probability $\hat{\theta}$ using obtained sample
+--
+* ... pretend that $\hat{\theta}$ is kind of estimation of $\theta$, for more convincingness add (binomial) confidence interval
+
+---
+# On sampling: stats
+
+.pull-left[
+1. randomly pick some languages
+]
+
+.pull-right[
+```{r}
+all_langs %>%
+  sample_n(200) %>%
+  mutate(group = "total = 200,\nvalue 1 = 49,\nθ = 0.245") %>%
+  rbind(all_langs) %>%
+  count(group, value) ->
+  simple_sample_results
+
+simple_sample_results %>%
+  ggplot(aes(fill = value, values = n)) +
+  geom_waffle(color = "white", size = .3, n_rows = 70, flip = TRUE, show.legend = FALSE) +
+  facet_wrap(~group, nrow = 1, strip.position = "bottom")+
+  ggthemes::scale_fill_tableau(name=NULL)+
+  theme_minimal(base_family = "Roboto Condensed")+
+  scale_x_discrete()+
+  scale_y_continuous(labels = function(x) x * 70, # make this multiplyer the same as n_rows
+                     expand = c(0,0))+
+  theme(panel.grid = element_blank(), axis.ticks.y = element_line())
+```
+
+]
+
+
+---
+# On sampling: linguistics
+
+---
+# Ok, but we are on the phonological section!
+
+* It is possible to use phonological units or relation of any phonological theory you like:
+    * features, feet, syllables, etc.
+    * feature constituents, OT constraints, examplars, phonological alternations
+    * phonological destinctions (e. g. /i/ vs. /ɨ/)
