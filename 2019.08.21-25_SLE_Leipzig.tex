@@ -10,7 +10,7 @@
 \title{\Large \hspace{-0.5cm} Analysing phonological systems: \\ on Bayesian typological research}
 \author[shortname]{George Moroz}
 \institute[shortinst]{Linguistic Convergence Laboratory, NRU HSE, Moscow, Russia}
-\date{\begin{center} 24 August 2019 \bigskip \\ Societas Linguistica Europaea, 52nd Annual Meeting, Leipzig University\\ \vfill Presentation is available here: {\large \href{https://tinyurl.com/yyj72dta}{tinyurl.com/yyj72dta} \hfill \includegraphics[height = 2.5cm]{images/01_qrcode}} \end{center}}
+\date{\begin{center} 24 August 2019 \bigskip \\ Societas Linguistica Europaea, 52nd Annual Meeting, Leipzig University\\ \vfill Presentation is available here: {\large \href{https://tinyurl.com/y3wtkcbq}{tinyurl.com/y3wtkcbq} \hfill \includegraphics[height = 2.5cm]{images/01_qrcode}} \end{center}}
 
 \begin{document}
 
@@ -61,17 +61,51 @@ What is the probability $\theta$ to meet \textbf{VAL 1} in randomly picked langu
 \end{itemize}
 \end{frame}
 
-\begin{frame}{There are different type of sampling:}
+\begin{frame}{There are different type of sampling}
 \begin{multicols}{2}
-\textbf{Random sampling:}\\
-pick randomly $n$ observations
-\columnbreak
 \includegraphics[width=\linewidth]{images/03_simple_sample}
+\columnbreak
+
+\textbf{Random sampling:}\\
+each element in the population has an equal probability of selection \pause\\
+\begin{itemize}
+\item[\color{colorblue}!!!] but each language is grouped in \textbf{a language family} and \textbf{an area}, so each observation is not independent\dots
+\end{itemize}
+
 \end{multicols}
 \end{frame}
 
 \begin{frame}{Language families (languages > 10)}
-\includegraphics[width=\linewidth]{images/05_families_by_area.jpeg}
+\includegraphics[width=\linewidth]{images/04_families_by_area}
+\end{frame}
+
+\begin{frame}{There are different type of sampling:}
+\begin{multicols}{2}
+\includegraphics[width=\linewidth]{images/05_families_by_area}
+\columnbreak
+
+\textbf{Stratified random sampling}\\
+divide population into groups that differ in important ways and then perform random sampling from each group\pause\\
+\begin{itemize}
+\item[\color{colorblue}!!!] The Glottolog version in the \texttt{\small lingtypology} package suggests that there are \\ \alert{214 unique combinations} (142 sign languages and 82 isolates counted as one family) \pause
+\item[\color{colorblue}$\Rightarrow$] So for creating statistically reasonable sample one need to get around 300 languages
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{I am not the first}
+\begin{itemize}
+\item \citep{bell78} "Language Samples"
+\item \citep{dryer89} "Large Linguistic Areas and Language Sampling"
+\item \citep{perkins89} "Statistical Techniques for Determining Language Sample Size"
+\item \citep{nichols92} "Linguistic Diversity in Space and Time"
+\item \citep{rietveld93} "Statistical Techniques for the Study of Language and Language Behaviour"
+\item \citep{rijkhoff98} "Language sampling"
+\item \citep{maslova00} "A dynamic approach to the verification of distributional universals"
+\item \citep{widmann01} "Language Sampling for Typological Studies"
+\item \citep{janssen06} "Randomization Tests in Language Typology"
+\item \citep{bakker10} "Language Sampling"
+\end{itemize}
 \end{frame}
 
 \begin{frame}{What about phonology?}
@@ -85,8 +119,14 @@ It is possible to use phonological units or relation of any phonological theory 
 \end{frame}
 
 \framecard[colorblue]{{\color{colorwhite} \Large Send me a letter!\\
-agricolamz@gmail.com\\ 
-\vfill Presentation is available here: \\tinyurl.com/yyj72dta\\
+agricolamzgmail.com\\ 
+\vfill Presentation is available here: \\tinyurl.com/y3wtkcbq\\
 \vfill  \includegraphics[height = 4cm]{images/02_qrcode}}}
+
+\begin{frame}{References}
+\footnotesize
+\bibliographystyle{config/chicago}
+\bibliography{bibliography}
+\end{frame}
 
 \end{document}

@@ -3,8 +3,30 @@ library(extrafont)
 theme_set(theme_minimal(base_family = "Roboto Condensed")+
             theme(text = element_text(size = 19, family = "Brill")))
 library(waffle)
+library(qrcode)
+qrcode_gen("https://github.com/agricolamz/2019.08.21-25_SLE_Leipzig/raw/master/2019.08.21-25_SLE_Leipzig.pdf")
+qrcode_gen("https://github.com/agricolamz/2019.08.21-25_SLE_Leipzig/raw/master/2019.08.21-25_SLE_Leipzig.pdf",
+           wColor = "#0099CC", bColor = "white")
+
+
+lingtypology::glottolog.modified %>% 
+  select(affiliation, language, area) %>% 
+  na.omit() %>% 
+  filter(affiliation != "Artificial Language",
+         affiliation != "Unclassified") %>% 
+  mutate(affiliation = str_replace(affiliation, "Deaf Sign Language", "Sign Language"),
+         affiliation = str_replace(affiliation, "Deaf sign language", "Sign Language"),
+         affiliation = ifelse(str_detect(affiliation, ","), str_extract(affiliation, ".*?,"), affiliation),
+         affiliation = str_remove(affiliation, ",")) ->
+  all_langs
+
+
+  count(affiliation, area, sort = TRUE) %>% 
+  mutate(rank = 1:n()) ->
+  all_langs
 
 set.seed(42)
+
 all_langs <- tibble(group = "total = 7420\nvalue 1 = 1891\nθ = 0.254",
                     value = sample(c("value 1", "value 2"),
                                    7420,
@@ -38,16 +60,7 @@ ggsave(filename = "03_simple_sample.jpeg",
        units = "mm",
        device = "jpeg")
 
-
-lingtypology::glottolog.modified %>% 
-  select(affiliation, language, area) %>% 
-  na.omit() %>% 
-  filter(affiliation != "Artificial Language",
-         affiliation != "Unclassified") %>% 
-  mutate(affiliation = str_replace(affiliation, "Deaf Sign Language", "Sign Language"),
-         affiliation = str_replace(affiliation, "Deaf sign language", "Sign Language"),
-         affiliation = ifelse(str_detect(affiliation, ","), str_extract(affiliation, ".*?,"), affiliation),
-         affiliation = str_remove(affiliation, ",")) %>% 
+all_langs %>% 
   count(affiliation, area, sort = TRUE) %>% 
   mutate(rank = 1:n()) %>% 
   filter(n > 10) %>% 
@@ -63,3 +76,4 @@ ggsave(filename = "05_families_by_area.jpeg",
        height = 150, 
        units = "mm",
        device = "jpeg")
+
