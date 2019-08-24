@@ -125,9 +125,17 @@ upsid %>%
   gather(vowel, ratio, a:u) %>% 
   mutate(affiliation = paste0(affiliation, " (", n, ")"),
          caption = paste("sample of ", sum(n)/3, " languages")) ->
-for_plot  
+for_plot
+
+for_plot %>% 
+  group_by(vowel) %>% 
+  summarise(mu = mean(ratio),
+            md = median(ratio)) ->
+  ms
+
 for_plot  %>% 
   ggplot(aes(n, ratio, label = affiliation, color = area))+
+  geom_hline(data = ms, aes(yintercept = md), linetype = 2, alpha = 0.5)+
   ggrepel::geom_text_repel(show.legend = FALSE, size = 4)+
   geom_point(aes(size = n), show.legend = FALSE)+
   facet_wrap(~vowel)+
@@ -143,8 +151,9 @@ ggsave(filename = "images/06_families_sample.jpeg",
 
 for_plot  %>% 
   ggplot(aes(ratio)) +
+  geom_vline(data = ms, aes(xintercept = md), linetype = 2, alpha = 0.5)+
   geom_density()+
-  facet_wrap(~vowel)+
+  facet_wrap(~vowel, scales = "free_y")+
   labs(caption = unique(for_plot$caption))+
   xlim(0, 1)
 
@@ -154,5 +163,46 @@ ggsave(filename = "images/07_distributions.jpeg",
        units = "mm",
        device = "jpeg")
 
-  
-  
+upsid %>% 
+  mutate(vowel = str_extract(Phoneme, "a|u|i")) %>% 
+  count(Glottocode, affiliation, LanguageName, vowel) %>% 
+  filter(!is.na(vowel)) %>% 
+  mutate(n = 1,
+         area = area.lang(lang.gltc(Glottocode))) %>% 
+  filter(!is.na(area)) %>% 
+  spread(vowel, n, fill = 0) %>% 
+  gather(vowel, value, a:u) %>% 
+  group_by(area, affiliation, vowel) %>% 
+  summarise(n = n(),
+            ratio = sum(value)/n) %>% 
+  spread(vowel, ratio) %>% 
+  ungroup() %>% 
+  filter(n > 2) %>% 
+  gather(vowel, ratio, a:u) %>% 
+  mutate(affiliation = paste0(affiliation, " (", n, ")"),
+         caption = paste("sample of ", sum(n)/3, " languages")) ->
+  for_plot_2  
+
+for_plot_2 %>% 
+  group_by(vowel) %>% 
+  summarise(mu = mean(ratio),
+            md = median(ratio)) ->
+  ms_2
+
+
+for_plot_2  %>% 
+  ggplot(aes(ratio)) +
+  geom_vline(data = ms_2, aes(xintercept = md), linetype = 2, alpha = 0.5)+
+  geom_density()+
+  facet_wrap(~vowel, scales = "free_y")+
+  labs(caption = unique(for_plot$caption))+
+  xlim(0, 1)
+
+for_plot_2 %>% 
+  count(affiliation)
+
+ggsave(filename = "images/08_distributions.jpeg", 
+       width = 200, 
+       height = 150, 
+       units = "mm",
+       device = "jpeg")
